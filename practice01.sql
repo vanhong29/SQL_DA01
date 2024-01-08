@@ -60,4 +60,6 @@ where finish_date is NULL
 select * from lyft_drivers
 where yearly_salary <= 30000 OR yearly_salary >= 70000
 
-
+-- Ex15
+select advertising_channel from uber_advertising
+where money_spent >= 100000
