@@ -21,4 +21,12 @@ GROUP BY candidate_id
 HAVING count(*) >= 3
 
 --Ex6
+SELECT user_id, (MAX(date(post_date)) - MIN(date(post_date))) as days_between
+FROM posts
+where post_date <= '01/01/2022'
+group by user_id
+HAVING MAX(date(post_date)) - MIN(date(post_date)) > 0
+ORDER BY user_id
+
+--Ex7
 
