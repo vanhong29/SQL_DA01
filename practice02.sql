@@ -29,4 +29,30 @@ HAVING MAX(date(post_date)) - MIN(date(post_date)) > 0
 ORDER BY user_id
 
 --Ex7
+SELECT card_name, max(issued_amount) - min (issued_amount) as difference
+FROM monthly_cards_issued
+group by card_name
+order by max(issued_amount) - min (issued_amount) DESC
+
+--Ex8
+SELECT manufacturer, count(*) as drug_count, sum(tbl.profit) * -1 AS total_loss
+FROM
+(SELECT manufacturer, product_id, SUM(total_sales) - SUM(cogs) as profit
+FROM pharmacy_sales
+GROUP BY manufacturer, product_id 
+HAVING SUM(total_sales) - SUM(cogs) < 0) as tbl
+GROUP BY manufacturer
+ORDER BY sum(tbl.profit) * -1 DESC
+
+select manufacturer, count(*), (sum(total_sales) - sum (cogs)) * -1
+from pharmacy_sales
+where total_sales < cogs
+group by manufacturer
+order by (sum(total_sales) - sum (cogs))*-1 desc
+
+--Ex9
+select *
+from cinema
+where id%2=1 and description <> 'boring'
+order by rating DESC
 
