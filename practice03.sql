@@ -38,8 +38,25 @@ where length(content) > 15
 
 --Ex7
 
+select activity_date as day, count(distinct user_id) as active_users
+from activity
+where DATE_SUB('2019-07-27', INTERVAL 30 DAY) <= activity_date AND activity_date <= '2019-07-27'
+group by activity_date
 
+  
+--Ex8
+select count(*)
+from employees
+where extract(month from joining_date)>=1 AND extract(month from joining_date) <= 7 AND extract(year from joining_date) = 2022
 
+--Ex9
+select position('a' IN first_name)
+from worker
+where first_name =  'Amitah'
+
+--Ex10
+select REGEXP_REPLACE(title,'[0-9]{4}',''), substring(title from '[0-9]{4}')
+from winemag_p2;
 
 
 
