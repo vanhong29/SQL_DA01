@@ -56,7 +56,12 @@ where first_name =  'Amitah'
 
 --Ex10
 select REGEXP_REPLACE(title,'[0-9]{4}',''), substring(title from '[0-9]{4}')
-from winemag_p2;
+from winemag_p2
+where country = 'Macedonia'
+
+select winery, substring(title from length(winery) + 2 for 4)
+from winemag_p2
+where country = 'Macedonia'
 
 
 
