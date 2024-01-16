@@ -24,7 +24,14 @@ from triangle
 
 -- Ex3
 
-  
+SELECT 
+round(SUM(
+CASE
+  when call_category = 'n/a' OR call_category is null then 1
+  else 0
+end
+) / count(*) * 100, 1) as call_percentage
+from callers
 
 --Ex4
 SELECT name
