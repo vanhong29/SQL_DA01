@@ -37,7 +37,11 @@ join employees as emp
 on mng.employee_id = emp.reports_to
 
 --Ex6
-
+select b.product_name, SUM(a.unit) as unit
+from orders as a join products b 
+on a.product_id = b.product_id AND extract(month from a.order_date) = 2
+group by b.product_name
+having SUM(a.unit) >= 100
 
 --Ex7
 
