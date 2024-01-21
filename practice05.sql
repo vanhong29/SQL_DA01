@@ -1,3 +1,12 @@
+-- Ex1
+
+select b.continent, floor(avg(a.population))
+from city a
+join country b
+on a.countrycode = b.code
+group by b.continent
+order by floor(avg(a.population))
+
 --Ex2
 SELECT 
 round(cast (sum (case 
@@ -44,7 +53,12 @@ group by b.product_name
 having SUM(a.unit) >= 100
 
 --Ex7
-
+SELECT a.page_id
+FROM pages a
+left join page_likes b
+on a.page_id = b.page_id
+group by a.page_id
+having count(b.user_id) = 0
 
 
 
