@@ -52,7 +52,15 @@ group by a.page_id
 having count(b.liked_date) = 0
 
 --Ex5
-
+SELECT EXTRACT(month from event_date) as month, count(distinct user_id) as monthly_active_users
+FROM user_actions as a
+where EXTRACT(year from event_date) = 2022 and EXTRACT(month from event_date) = 7
+and user_id in (
+select user_id
+from user_actions as b 
+where EXTRACT(year from event_date) = 2022 and EXTRACT(month from event_date) = 6
+)
+GROUP BY EXTRACT(month from event_date)
 
 --Ex6
 with tbl as(
