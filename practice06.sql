@@ -99,6 +99,21 @@ group by customer_id
 having count(distinct product_key) = (select count(*) from product)
 
 --Ex9
+select customer_id
+from customer
+group by customer_id
+having count(distinct product_key) = (select count(*) from product)
+
+--Ex10
+select count(*) as duplicate_companies
+from (
+SELECT company_id, title, description, count(*)
+FROM job_listings
+group by company_id, title, description
+having count(*)>1
+) as tbl_2
+
+--Ex11
 
 
 
