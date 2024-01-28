@@ -54,7 +54,51 @@ having count(b.liked_date) = 0
 --Ex5
 
 
+--Ex6
+with tbl as(
+    select to_char(trans_date, 'YYYY-MM') as month, *
+    from transactions
+    -- group by to_char(trans_date, 'YYYY-MM'), country
+)
 
+select a.month, a.country, count(*) as trans_count,
+(select count(*) as approved_count
+from tbl as b
+where b.state = 'approved' and b.country = a.country and b.month = a.month
+group by b.month,b.country
+),
+(select sum(amount) as trans_total_amount
+from tbl as c
+where c.country = a.country and c.month = a.month
+group by c.month,c.country
+),
+(select sum(amount) as approved_total_amount
+from tbl as d
+where d.state = 'approved' and d.country = a.country and d.month = a.month
+group by d.month,d.country
+)
+from tbl as a
+group by a.month, a.country
+
+
+--Ex7
+with product_year as(
+select product_id, min(year) as first_year
+from sales
+group by product_id
+)
+
+select a.*, b.quantity, b.price
+from product_year a left join sales b
+on a.product_id = b.product_id and a.first_year = b.year
+
+--Ex8
+select customer_id
+from customer
+group by customer_id
+having count(distinct product_key) = (select count(*) from product)
+
+--Ex9
 
 
 
