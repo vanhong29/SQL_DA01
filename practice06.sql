@@ -114,7 +114,51 @@ having count(*)>1
 ) as tbl_2
 
 --Ex11
+with user_rated_the_most as (
+select 
+(select name from users as b where b.user_id = a.user_id) as results
+from movierating as a
+group by user_id
+order by count(rating) desc, results
+limit 1
+), movie_rated_highest as (
+select 
+(select title from movies where movies.movie_id = movierating.movie_id) as results
+from movierating
+where extract(year from movierating.created_at) =2020 and extract(month from movierating.created_at) = 2
+group by movie_id
+order by avg(rating) desc, results
+limit 1
+)
 
+select *
+from user_rated_the_most
+union all
+select *
+from movie_rated_highest
+
+--Ex12
+with request as (
+    select requester_id , count(*) 
+    from RequestAccepted 
+    group by requester_id 
+)
+, accept as (
+    select accepter_id  , count(*) 
+    from RequestAccepted 
+    group by accepter_id  
+)
+select requester_id as id, sum(count) as num
+from (
+select *
+from request
+union all
+select *
+from accept
+)
+group by requester_id
+order by sum(count) desc
+limit 1
 
 
 
