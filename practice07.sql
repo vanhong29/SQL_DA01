@@ -32,9 +32,42 @@ group by transaction_date, user_id
 where tbl.stt = 1
 order by tbl.transaction_date
 
+-- Ex5
+
+--Ex6
+with tbl as (
+SELECT merchant_id, credit_card_id, amount,
+transaction_timestamp,
+lead(transaction_timestamp) OVER(PARTITION BY merchant_id, credit_card_id),
+lead(amount) OVER(PARTITION BY merchant_id, credit_card_id),
+lead(amount) OVER(PARTITION BY merchant_id, credit_card_id) - amount as amount_diff,
+extract(EPOCH FROM (lead(transaction_timestamp) OVER(PARTITION BY merchant_id, credit_card_id) - transaction_timestamp)) / 60 as minute_diff
+FROM transactions
+)
+
+select count(*) as payment_count
+from tbl
+where tbl.amount_diff = 0 and tbl.minute_diff <= 10
+
 
 --Ex7
   
+with a as 
+(
+select category, product, sum(spend) as total_spend,
+RANK() over(PARTITION BY category ORDER BY sum(spend) desc ) as stt
+from product_spend 
+where EXTRACT(year from transaction_date) = 2022
+group by category, product
+order by category, product
+)
+
+select a.category, a.product, a.total_spend
+from a 
+where a.stt <= 2
+group by category, product, a.total_spend
+order by a.category, a.total_spend DESC
+
 
 --Ex8
 with b as (
