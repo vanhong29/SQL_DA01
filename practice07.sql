@@ -32,7 +32,35 @@ group by transaction_date, user_id
 where tbl.stt = 1
 order by tbl.transaction_date
 
---Ex5
+
+--Ex7
+  
+
+--Ex8
+with b as (
+select tbl.artist_name, count(*) as no_top_10
+from
+(select *
+from
+(select *
+from global_song_rank 
+where rank <= 10
+) as a 
+JOIN songs b on a.song_id = b.song_id
+join artists c on c.artist_id = b.artist_id ) as tbl
+group by tbl.artist_name
+)
+
+select *
+from (
+select b.artist_name, 
+dense_RANK() OVER(order by b.no_top_10 desc) as artist_rank
+from b 
+) as c
+where c.artist_rank <= 5
+
+
+
 
 
 
