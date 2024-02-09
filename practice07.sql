@@ -22,6 +22,36 @@ from transactions
 where tbl.stt = 3
 
 --Ex4
+select tbl.transaction_date, tbl.user_id, tbl.purchase_count
+from
+(SELECT transaction_date, user_id, count(*) as purchase_count,
+RANK() over (PARTITION BY user_id order by transaction_date desc) as stt
+FROM user_transactions 
+group by transaction_date, user_id
+) as tbl
+where tbl.stt = 1
+order by tbl.transaction_date
+
+--Ex5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
