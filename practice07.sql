@@ -13,5 +13,35 @@ FROM monthly_cards_issued
 ORDER BY FIRST_VALUE(issued_amount) OVER(PARTITION BY card_name ORDER BY issue_year, issue_month) DESC
 
 --Ex3
+select tbl.user_id, tbl.spend, tbl.transaction_date
+from (
+SELECT user_id, spend, transaction_date,
+row_number() over(PARTITION BY user_id order by transaction_date) as stt
+from transactions
+) as tbl
+where tbl.stt = 3
+
+--Ex4
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
