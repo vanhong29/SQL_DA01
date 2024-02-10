@@ -34,6 +34,43 @@ from seat
 
 --Ex4
 
+with a as (
+select visited_on,
+sum(amount) as amount
+from customer
+group by visited_on
+order by visited_on ),
+b as (
+select a.visited_on,
+sum(amount) over (order by visited_on rows between 6 preceding and current row) as amount,
+round(sum(amount) over (order by visited_on rows between 6 preceding and current row)/7,2) as average_amount
+from a
+)
+
+
+select *
+from b
+where b.visited_on >= 6+ (select min(visited_on) from customer)
+
+--Ex5
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
