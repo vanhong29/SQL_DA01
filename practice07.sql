@@ -34,6 +34,10 @@ order by tbl.transaction_date
 
 -- Ex5
 
+select user_id, tweet_date,
+ROUND(avg(tweet_count) over(PARTITION BY user_id order by tweet_date ROWS BETWEEN 2 PRECEDING AND CURRENT ROW),2)as rolling_avg_3d
+from tweets
+
 --Ex6
 with tbl as (
 SELECT merchant_id, credit_card_id, amount,
