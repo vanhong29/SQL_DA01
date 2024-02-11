@@ -108,7 +108,32 @@ limit 1
 
 --Ex8
 
+-- Write your PostgreSQL query statement below
+with tbl as(
+select *,
+row_number() over (partition by product_id order by change_date) as rank
+from products as a
+order by product_id
+), tbl2 as (
+    select *
+    from tbl as a
+    where a.change_date > '2019-08-16' and rank = 1 OR (a.change_date <= '2019-08-16')
+), tbl3 as (
+select b.product_id, b.new_price as price, b.change_date
+from tbl2 as b
+where b.rank =
+(select count(*) 
+from tbl2 as c
+where c.product_id = b.product_id
+group by c.product_id)
+)
 
+select c.product_id,
+case
+    when c.change_date > '2019-08-16' then 10
+    else c.price
+end
+from tbl3 as c
 
 
 
