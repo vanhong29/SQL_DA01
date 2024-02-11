@@ -53,6 +53,58 @@ from b
 where b.visited_on >= 6+ (select min(visited_on) from customer)
 
 --Ex5
+-- Write your PostgreSQL query statement below
+
+with tbl_same_position as (
+    select *,
+    lead(lat) over(order by lat) - lat as lat_after,
+    lag(lat) over(order by lat) - lat as lat_before,
+    lead(lon) over(order by lon) - lon as lon_after,
+    lag(lon) over(order by lon) - lon as lon_before
+    from insurance
+), tbl_diff_location as (
+select b.pid, b.tiv_2015, b.tiv_2016, b.lat, b.lon
+from tbl_same_position as b
+where (b.lat_before <> 0 or b.lat_before is null ) and (b.lon_before <> 0 or b.lon_before is null ) and (b.lat_after <> 0 or b.lat_after is null) 
+and( b.lon_after <> 0 or b.lon_after is null )
+), tbl_same_amount as (
+    select *,
+    lead(tiv_2015) over(order by tiv_2015) - tiv_2015 as diff_15_after,
+    lag(tiv_2015) over(order by tiv_2015) - tiv_2015 as diff_15_before
+    from tbl_diff_location as c
+)
+
+select sum(c.tiv_2016) as tiv_2016
+from tbl_same_amount as c
+where c.diff_15_after = 0 or c.diff_15_before = 0
+
+
+--Ex6
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
