@@ -94,6 +94,19 @@ where d.rank <= 3
 
 --Ex7
 
+-- Write your PostgreSQL query statement below
+select b.person_name
+from (
+select a.turn, a.person_id, a.person_name, a.weight,
+sum(weight) over (order by turn) as total_weight
+from queue as a
+order by turn
+) as b
+where b.total_weight <= 1000
+order by b.total_weight desc
+limit 1
+
+--Ex8
 
 
 
