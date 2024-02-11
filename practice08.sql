@@ -78,8 +78,38 @@ select sum(c.tiv_2016) as tiv_2016
 from tbl_same_amount as c
 where c.diff_15_after = 0 or c.diff_15_before = 0
 
-
 --Ex6
+-- Write your PostgreSQL query statement below
+select d.department as Department, d.name as Employee, d.salary as Salary
+from (
+select *,
+dense_rank() over (partition by c.department order by c.salary desc) as rank
+from (
+select b.name as department, a.name, a.salary
+from employee a left join department b
+on a.departmentId= b.id
+) as c
+) as d
+where d.rank <= 3
+
+--Ex7
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
